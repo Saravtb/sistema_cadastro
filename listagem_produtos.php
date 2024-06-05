@@ -2,6 +2,17 @@
 <?php include('conexao.php'); ?>
 
 <?php
+// Excluir produto
+if (isset($_GET['delete_id'])) {
+    $delete_id = $_GET['delete_id'];
+    $sql = "DELETE FROM produtos WHERE id='$delete_id'";
+    if ($conn->query($sql) === TRUE) {
+        $mensagem = "Produto excluído com sucesso!";
+    } else {
+        $mensagem = "Erro ao excluir produto: " . $conn->error;
+    }
+}
+
 $produtos = $conn->query("SELECT p.id, p.nome, p.descricao, p.preco, f.nome AS fornecedor_nome FROM produtos p JOIN fornecedores f ON p.fornecedor_id = f.id");
 ?>
 
@@ -13,6 +24,7 @@ $produtos = $conn->query("SELECT p.id, p.nome, p.descricao, p.preco, f.nome AS f
 </head>
 <body>
     <h2>Listagem de Produtos</h2>
+    <?php if (isset($mensagem)) echo "<p>$mensagem</p>"; ?>
     <table border="1">
         <tr>
             <th>ID</th>
@@ -20,6 +32,7 @@ $produtos = $conn->query("SELECT p.id, p.nome, p.descricao, p.preco, f.nome AS f
             <th>Descrição</th>
             <th>Preço</th>
             <th>Fornecedor</th>
+            <th>Ações</th>
         </tr>
         <?php while ($row = $produtos->fetch_assoc()): ?>
         <tr>
@@ -28,6 +41,10 @@ $produtos = $conn->query("SELECT p.id, p.nome, p.descricao, p.preco, f.nome AS f
             <td><?php echo $row['descricao']; ?></td>
             <td><?php echo $row['preco']; ?></td>
             <td><?php echo $row['fornecedor_nome']; ?></td>
+            <td>
+                <a href="cadastro_produto.php?edit_id=<?php echo $row['id']; ?>">Editar</a>
+                <a href="?delete_id=<?php echo $row['id']; ?>" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>
+            </td>
         </tr>
         <?php endwhile; ?>
     </table>
