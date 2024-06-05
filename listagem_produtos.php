@@ -2,7 +2,6 @@
 <?php include('conexao.php'); ?>
 
 <?php
-// Excluir produto
 if (isset($_GET['delete_id'])) {
     $delete_id = $_GET['delete_id'];
     $sql = "DELETE FROM produtos WHERE id='$delete_id'";
@@ -21,33 +20,36 @@ $produtos = $conn->query("SELECT p.id, p.nome, p.descricao, p.preco, f.nome AS f
 <head>
     <meta charset="UTF-8">
     <title>Listagem de Produtos</title>
+    <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body>
-    <h2>Listagem de Produtos</h2>
-    <?php if (isset($mensagem)) echo "<p>$mensagem</p>"; ?>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Descrição</th>
-            <th>Preço</th>
-            <th>Fornecedor</th>
-            <th>Ações</th>
-        </tr>
-        <?php while ($row = $produtos->fetch_assoc()): ?>
-        <tr>
-            <td><?php echo $row['id']; ?></td>
-            <td><?php echo $row['nome']; ?></td>
-            <td><?php echo $row['descricao']; ?></td>
-            <td><?php echo $row['preco']; ?></td>
-            <td><?php echo $row['fornecedor_nome']; ?></td>
-            <td>
-                <a href="cadastro_produto.php?edit_id=<?php echo $row['id']; ?>">Editar</a>
-                <a href="?delete_id=<?php echo $row['id']; ?>" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>
-            </td>
-        </tr>
-        <?php endwhile; ?>
-    </table>
-    <a href="index.php">Voltar</a>
+    <div class="container">
+        <h2>Listagem de Produtos</h2>
+        <?php if (isset($mensagem)) echo "<p class='message " . ($conn->error ? "error" : "success") . "'>$mensagem</p>"; ?>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Preço</th>
+                <th>Fornecedor</th>
+                <th>Ações</th>
+            </tr>
+            <?php while ($row = $produtos->fetch_assoc()): ?>
+            <tr>
+                <td><?php echo $row['id']; ?></td>
+                <td><?php echo $row['nome']; ?></td>
+                <td><?php echo $row['descricao']; ?></td>
+                <td><?php echo $row['preco']; ?></td>
+                <td><?php echo $row['fornecedor_nome']; ?></td>
+                <td>
+                    <a href="cadastro_produto.php?edit_id=<?php echo $row['id']; ?>">Editar</a>
+                    <a href="?delete_id=<?php echo $row['id']; ?>" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</a>
+                </td>
+            </tr>
+            <?php endwhile; ?>
+        </table>
+        <a href="index.php">Voltar</a>
+    </div>
 </body>
 </html>
