@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $username = "root";
-$password = "";
+$password = "root";
 $dbname = "sistema_cadastro";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
