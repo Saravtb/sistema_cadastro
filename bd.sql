@@ -31,3 +31,6 @@ CREATE TABLE produtos (
 
 -- Expressão SQL para cadastrar um usuário
 INSERT INTO usuarios (usuario, senha) VALUES ('admin', MD5('admin123'));
+
+
+ALTER TABLE produtos ADD COLUMN concluido TINYINT(1) DEFAULT 0;
